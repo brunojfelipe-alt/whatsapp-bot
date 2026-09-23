@@ -1,0 +1,67 @@
+# Regras de negócio do bot de atendimento.
+# Para atender outro cliente, copie este arquivo e ajuste os campos abaixo;
+# aponte BUSINESS_CONFIG (no .env) para o novo arquivo.
+
+business_name: "Studio Fit"
+
+welcome_message: >
+  Olá! 👋 Bem-vindo ao *Studio Fit*.
+  Sou o assistente virtual e posso te ajudar com informações sobre horários,
+  planos e endereço. Escolha uma opção abaixo:
+
+menu_message: |
+  1️⃣ Horário de funcionamento
+  2️⃣ Planos e valores
+  3️⃣ Endereço
+  4️⃣ Falar com atendente
+
+fallback_message: >
+  Não entendi sua pergunta 🤔. Digite uma das opções do menu ou o número
+  correspondente.
+
+handoff_message: >
+  Vou te transferir para um atendente humano, só um momento! 🙋
+
+intents:
+  - id: horario
+    option: "1"
+    keywords: ["horario", "horário", "funciona", "funcionamento", "aberto", "abre", "fecha"]
+    reply: >
+      Funcionamos de segunda a sexta das 6h às 22h, e aos sábados das 8h às
+      14h. Aos domingos não abrimos. 🏋️
+  - id: planos
+    option: "2"
+    keywords: ["plano", "planos", "preco", "preço", "precos", "preços", "valor", "valores", "mensalidade", "quanto custa"]
+    reply: |
+      Nossos planos são:
+      • Mensal: R$ 129,90
+      • Trimestral: R$ 349,90
+      • Anual: R$ 1.199,90
+
+      Todos incluem musculação e aulas coletivas! 💪
+  - id: endereco
+    option: "3"
+    keywords: ["endereco", "endereço", "onde fica", "localizacao", "localização", "local", "rua", "como chegar"]
+    reply: >
+      Estamos na Av. das Nações, 1200 - Centro. Temos estacionamento
+      próprio! 📍
+  - id: humano
+    option: "4"
+    keywords: ["atendente", "humano", "pessoa", "falar com alguem", "falar com alguém", "ajuda humana"]
+    reply: ""  # tratado pelo engine como handoff
+
+handoff:
+  number_env: "HANDOFF_NUMBER"
+  business_hours: "Segunda a sexta, das 8h às 18h"
+  fallback_attempts_before_handoff: 2
+
+session:
+  timeout_minutes: 30
+
+llm:
+  enabled: false
+  model: "openai/gpt-4o-mini"
+  system_prompt: >
+    Você é o assistente virtual do Studio Fit. Responda apenas com base nas
+    informações de horário, planos e endereço fornecidas no contexto. Se não
+    souber, diga que vai transferir para um atendente humano.

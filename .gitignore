@@ -1,0 +1,7 @@
+docker/.env
+bot/.env
+__pycache__/
+*.pyc
+.venv/
+bot/data/*.db
+bot/data/qr.png
